@@ -1,4 +1,4 @@
-name: Publish to NPM
+﻿name: Publish to NPM
 
 on:
   push:
@@ -19,7 +19,7 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
 
       - name: Install Dependencies
-        run: npm ci
+        run: npm install
 
       - name: Build Library
         run: npm run build

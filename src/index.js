@@ -2,15 +2,18 @@
  * WebcamDeviceManager Library
  * Part of CraftThingy Digital Innovation SDK
  * Licensed under Public-Source Corporate Royalty License (PSCRL)
+ * Isomorphic: Safe to import in Node.js and Browser environments.
  */
 
 export class WebcamDeviceManager {
     constructor(config = {}) {
-        this.videoElement = typeof config.videoElement === 'string' 
+        const isBrowser = typeof window !== 'undefined' && typeof document !== 'undefined';
+        
+        this.videoElement = (isBrowser && typeof config.videoElement === 'string') 
             ? document.querySelector(config.videoElement) 
             : config.videoElement;
             
-        this.canvasElement = typeof config.canvasElement === 'string' 
+        this.canvasElement = (isBrowser && typeof config.canvasElement === 'string') 
             ? document.querySelector(config.canvasElement) 
             : config.canvasElement;
             
@@ -25,6 +28,12 @@ export class WebcamDeviceManager {
      * Triggers permission dialog if not already granted.
      */
     async getDevices() {
+        if (typeof navigator === 'undefined' || !navigator.mediaDevices) {
+            const err = new Error("WebcamDeviceManager.getDevices(): MediaDevices API is not supported in this environment.");
+            this.onError(err);
+            throw err;
+        }
+
         try {
             // Attempt to trigger permission dialog first to get labeled devices
             const initialStream = await navigator.mediaDevices.getUserMedia({ video: true });
@@ -48,6 +57,12 @@ export class WebcamDeviceManager {
     async start(deviceId = null) {
         this.stop();
         this.activeDeviceId = deviceId;
+
+        if (typeof navigator === 'undefined' || !navigator.mediaDevices) {
+            const err = new Error("WebcamDeviceManager.start(): MediaDevices API is not supported in this environment.");
+            this.onError(err);
+            throw err;
+        }
         
         const constraints = {
             video: {
