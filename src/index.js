@@ -120,3 +120,7 @@ export class WebcamDeviceManager {
         return canvas.toDataURL(format, quality);
     }
 }
+
+if (typeof window !== 'undefined') {
+    window.WebcamDeviceManager = WebcamDeviceManager;
+}
