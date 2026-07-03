@@ -1,6 +1,7 @@
 {
   "name": "@craftthingy-digital-innovation/cty-webcam-device-manager",
-  "version": "1.0.0",
+  "description": "Modular client-side webcam device initializer, camera switcher, and canvas frame capture utility.",
+  "version": "1.0.1",
   "type": "module",
   "repository": {
     "type": "git",
